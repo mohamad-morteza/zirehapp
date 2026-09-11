@@ -1,0 +1,40 @@
+# Nuxt dev/build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist
+
+# Node dependencies
+node_modules
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Logs
+logs
+*.log
+
+# Misc
+.DS_Store
+.fleet
+.idea
+
+# Build outputs
+*.zip
+*.rar
+
+# APK files
+*.apk
+
+# Claude
+.claude/
+
+# Server assets
+server/assets/
+
+# Locales pages
+/locales/pages

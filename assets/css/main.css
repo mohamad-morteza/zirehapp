@@ -1,0 +1,115 @@
+@font-face {
+  font-family: YekanBakh;
+  src: local('Yekan-Bakh-Regular'),url('/fonts/Yekan-Bakh-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;  /* Ensures font swap */
+  unicode-range: U+0030-0039, U+0600-06FF, U+0750-077F, U+FB50-FDFF, U+FE70-FEFF;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  background-color: #f4f4f4;
+
+}
+
+html[dir='rtl'] {
+  font-family: YekanBakh, sans-serif;
+  text-align: right;
+}
+
+html[dir='ltr'] {
+  text-align: left;
+  font-family: sans-serif;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+.section-content {
+  padding: 30px 36px;
+}
+
+.ic-loading {
+  animation: linear ic-loading infinite 2s;
+}
+
+.ltr {
+  direction: ltr;
+}
+
+.rtl {
+  direction: ltr;
+}
+
+.nuxt-icon svg {
+    margin-bottom: 0 !important;
+}
+
+.Toastify__toast {
+    font-family: inherit !important;
+}
+/*
+TODO: -remove this class
+ */
+.c-container {
+  max-width: 1200px;
+  box-sizing: content-box;
+  padding-left: 0.75rem;  /* px-3 = 0.75rem = 12px */
+  padding-right: 0.75rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+.full-container {
+  max-width: 1200px;
+  box-sizing: content-box;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@keyframes ic-loading {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+/* Hide arrows in Chrome, Safari, Edge, Opera */
+/* Hide number input spinners for all browsers */
+input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none; /* Chrome, Safari, Edge, Opera */
+  margin: 0;
+}
+/* Global scrollbar styles for modern browsers */
+* {
+  scrollbar-width: thin;              /* Firefox */
+  scrollbar-color: #00AAA1 #f0f0f0;      /* Firefox */
+}
+
+/* Webkit-based browsers (Chrome, Safari, Edge) */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #f0f0f0; /* track color */
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #bbb;    /* thumb color */
+  border-radius: 10px;
+  border: 2px solid #f0f0f0; /* creates padding inside track */
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #999;
+}
