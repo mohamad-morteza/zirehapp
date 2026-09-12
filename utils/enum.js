@@ -16,13 +16,13 @@ export const BlogSortTypesEnum = {
   Visit: 14,
   Random: 15,
   LastUpdate: 16,
-  Comment:17,
-  SelectedCount:18,
-  UsableCount:19,
-  BeforeWeight:20,
-  AfterWeight:21,
-  MonthToGoal:22,
-  Status:23
+  Comment: 17,
+  SelectedCount: 18,
+  UsableCount: 19,
+  BeforeWeight: 20,
+  AfterWeight: 21,
+  MonthToGoal: 22,
+  Status: 23,
 }
 
 export const ImageSizeEnum = {

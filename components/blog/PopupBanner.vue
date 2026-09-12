@@ -2,6 +2,7 @@
 const props = defineProps({
   popupBanner: { type: Object, default: null },
 })
+
 const show = ref(false)
 const imageIsLoaded = ref(false)
 
@@ -12,11 +13,13 @@ const handleScroll = () => {
     window.removeEventListener('scroll', handleScroll)
   }
 }
+
 const setTimeToShowBanner = () => {
   window.setTimeout(() => {
     show.value = true
   }, props.popupBanner.SecondToShow * 1000)
 }
+
 onMounted(() => {
   const key = 'bannerShowDate'
   let bannerShowDate = []
@@ -27,8 +30,7 @@ onMounted(() => {
     if (stored) {
       try {
         bannerShowDate = JSON.parse(stored)
-      }
-      catch (e) {
+      } catch {
         bannerShowDate = []
       }
     }
@@ -46,8 +48,7 @@ onMounted(() => {
       // Show the banner
       if (props.popupBanner.SecondToShow) {
         setTimeToShowBanner()
-      }
-      else {
+      } else {
         window.addEventListener('scroll', handleScroll)
       }
     }
@@ -76,12 +77,13 @@ onBeforeUnmount(() => {
     <a
       :href="popupBanner?.URL"
       target="_blank"
+      rel="noopener noreferrer"
       class="cursor-pointer aspect-[3/4]"
     >
       <NuxtImg
         :src="$viewport.isLessThan('sm') ? popupBanner?.MobileImage : popupBanner?.Image"
         alt="popup-img"
-        :placholder="[448, 330]"
+        :placeholder="[448, 330]"
         format="webp"
         densities="x1"
         @load="() => imageIsLoaded=true"

@@ -2,17 +2,8 @@
 const { robots } = useDomain()
 
 useSeoMeta({
-  robots: robots
+  robots: robots,
 })
-
-// useHead({
-//   link: [
-//     {
-//       rel: 'canonical',
-//       href: canonical
-//     }
-//   ]
-// })
 
 useHead({
   htmlAttrs: {

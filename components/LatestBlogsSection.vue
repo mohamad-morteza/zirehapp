@@ -1,5 +1,6 @@
 <script setup>
 const { $getLocale, $t } = useI18n()
+
 const { data: blogs } = await useAPI('blog/getlist', {
   method: 'POST',
   body: {
@@ -9,6 +10,7 @@ const { data: blogs } = await useAPI('blog/getlist', {
     SortBy: BlogSortTypesEnum.CreatedAt,
   },
   transform: (res) => {
+    if (!res?.Data) return []
     return res.Data.map(item => ({
       date: new Date(item.CreatedAt).toLocaleDateString($getLocale()),
       name: !item.Name || !item.Family ? $t('author') : item.Name + ' ' + item.Family,
@@ -22,6 +24,8 @@ const { data: blogs } = await useAPI('blog/getlist', {
     }))
   },
 })
+
+const blogList = computed(() => blogs.value || [])
 </script>
 
 <template>
@@ -46,20 +50,20 @@ const { data: blogs } = await useAPI('blog/getlist', {
             <i class="ic-left-arrow text-[8px] md:text-[11px]" />
           </a>
         </div>
-        <div class="h-[380px]">
-          <ui-kit-carosoul
+        <div v-if="blogList.length" class="h-[380px]">
+          <ui-kit-carousel
             v-slot="{ slide }"
-            :info="blogs"
+            :info="blogList"
           >
             <div class="w-full rtl:ml-2 ltr:mr-2 rtl:text-right ltr:text-left">
               <div class="h-[207px] w-full md:w-[462px] mb-6 rounded-2xl ">
                 <NuxtImg
-                  :src="slide.BlogImage[1].Url"
+                  :src="slide.BlogImage?.[1]?.Url || slide.ImageAlt"
                   :alt="slide.ImageAlt"
                   class="h-[207px] rounded-2xl object-cover hover:scale-105 transition-all duration-200 ease-in"
                   height="207"
                   width="462"
-                  :placeholder="true"
+                  :placeholder
                 />
               </div>
               <NuxtLink
@@ -74,7 +78,7 @@ const { data: blogs } = await useAPI('blog/getlist', {
                 <p v-text="$t('readingDuration', [slide.ReadingDuration])" />
               </div>
             </div>
-          </ui-kit-carosoul>
+          </ui-kit-carousel>
         </div>
       </div>
     </div>

@@ -8,23 +8,27 @@ const { data: items } = await useAPI('/content/get-by-type', {
     Type: [4],
   },
   transform: (res) => {
+    if (!res?.Data?.[0]?.ContentDetails) return []
     return res.Data[0].ContentDetails
   },
 })
+
+const featureItems = computed(() => items.value || [])
+const currentItem = computed(() => featureItems.value[currentSlideIndex.value] || {})
 </script>
 
 <template>
   <div>
-    <div >
+    <div>
       <div class="flex flex-row items-center flex-wrap md:flex-nowrap">
         <div
           class="w-full md:w-[400px] sm:me-6 md:me-8 lg:me-20 mb-6 sm:mb-0"
         >
-          <div class="bg-[#D9D9D9] rounded-2xl mb-4">
-            <ui-kit-carosoul
+          <div v-if="featureItems.length" class="bg-[#D9D9D9] rounded-2xl mb-4">
+            <ui-kit-carousel
               v-slot="{ slide }"
               v-model="currentSlideIndex"
-              :info="items"
+              :info="featureItems"
               :swiper-config="{
                 breakpoints: {
                   1920: {
@@ -49,9 +53,9 @@ const { data: items } = await useAPI('/content/get-by-type', {
                 width="395px"
                 height="395px"
                 class="object-cover m-auto"
-                :placeholder="true"
+                :placeholder
               />
-            </ui-kit-carosoul>
+            </ui-kit-carousel>
           </div>
         </div>
         <div class="w-full md:grow">
@@ -62,11 +66,11 @@ const { data: items } = await useAPI('/content/get-by-type', {
             <div :key="currentSlideIndex">
               <p
                 class="text-sm md:text-2xl font-bold mb-2 sm:mb-3"
-                v-text="items[currentSlideIndex].Title"
+                v-text="currentItem.Title"
               />
               <p
                 class="text-sm md:text-base"
-                v-text="items[currentSlideIndex].Description"
+                v-text="currentItem.Description"
               />
             </div>
           </Transition>

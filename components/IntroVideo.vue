@@ -10,7 +10,7 @@
         width="600px"
         class="rounded-3xl md:rounded-2xl mx-auto"
       />
-      <ui-kit-play-btn />
+      <ui-kit-play-button />
       <gallery-wrapper
         ref="galleryRef"
         :items="items"
@@ -30,27 +30,29 @@
 </template>
 
 <script setup>
-defineProps({
-  video: { type: String, default: '' },
-  cover: { type: String, default: '' },
+const props = defineProps({
+  video: { type: String, default: '/video/intro.mp4' },
+  cover: { type: String, default: '/img/cover.svg' },
   title: { type: String, default: '' },
 })
+
 const galleryRef = ref(null)
 function showGallery() {
   galleryRef.value?.openGallery(0)
 }
-const items = [
+
+const items = computed(() => [
   {
     type: 'video',
     config: {
       video: {
-        source: [{ src: '/video/home.mp4', type: 'video/mp4' }],
+        source: [{ src: props.video, type: 'video/mp4' }],
         attributes: { preload: false, controls: true },
       },
-      dataPoster: '/img/cover.webp',
+      dataPoster: props.cover,
       dataSubHtml: 'میخوای بدونی رژیم کالری شماری چطوریه؟',
-      image: '/img/cover.webp',
+      image: props.cover,
     },
   },
-]
+])
 </script>

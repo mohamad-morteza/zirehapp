@@ -7,7 +7,7 @@
         :class="dir === 'rtl' ? 'flex-row-reverse' : ''"
         :style="{ transform: `translateX(-${currentIndex * 100}%)` }"
         @touchend="handleTouchMove"
-        @touchstart="handleTochStart"
+        @touchstart="handleTouchStart"
       >
         <div
           v-for="(img, index) in images"
@@ -21,7 +21,7 @@
             <NuxtImg
               :src="img.Image"
               :alt="img.Title"
-              class="rounded-2xl w-full object-cover"
+              class="rounded-2xl w-full h-full object-cover"
               :lazy="index !== 0"
             />
           </NuxtLink>
@@ -33,7 +33,7 @@
       <span
         v-for="(img, i) in images"
         :key="i"
-        class="h-3 w-3 rounded-full cursor-pointer GTM_topSliderClick"
+        class="h-3 w-3 rounded-full cursor-pointer"
         :class="i === currentIndex ? 'bg-primary w-6' : 'bg-gray-400'"
         style="transition: all 0.3s"
         @click="currentIndex = i"
@@ -57,6 +57,7 @@ let startX, startY
 onMounted(() => {
   dir.value = document?.documentElement?.getAttribute('dir') === 'rtl' ? 'rtl' : 'ltr'
 })
+
 const handleTouchMove = (event) => {
   const endX = event.changedTouches[0].clientX
   const endY = event.changedTouches[0].clientY
@@ -72,15 +73,15 @@ const handleTouchMove = (event) => {
       if (currentIndex.value === 0)
         currentIndex.value = props.images.length - 1
       else currentIndex.value--
-    }
-    else {
+    } else {
       if (currentIndex.value === props.images.length - 1)
         currentIndex.value = 0
       else currentIndex.value++
     }
   }
 }
-const handleTochStart = (event) => {
+
+const handleTouchStart = (event) => {
   startX = event.changedTouches[0].clientX
   startY = event.changedTouches[0].clientY
 }

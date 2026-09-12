@@ -38,9 +38,9 @@ const props = defineProps({
   inputClass: { type: String, default: '' },
 })
 
-let model = defineModel({ default: '' })
+const model = defineModel({ default: '' })
 
-let focused = ref(false)
+const focused = ref(false)
 
 const disabledIncrement = computed(() => {
   return model.value >= props.max

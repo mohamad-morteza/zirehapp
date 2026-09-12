@@ -43,17 +43,21 @@ const props = defineProps({
   swiperConfig: { type: Object, default: () => ({}) },
   slideClass: { type: String, default: '' },
 })
+
 let mySwiper = null
 const swiperIsLoad = ref(false)
 const containerClass = '.swiper_' + useId()
 const containerPagination = `${containerClass} .swiper-pagination`
 const model = defineModel({ type: Number, default: 0 })
+
 const stopSwiperLoop = () => {
   mySwiper.autoplay.stop()
 }
+
 const startSwiperLoop = () => {
   mySwiper.autoplay.start()
 }
+
 defineExpose({ stopSwiperLoop, startSwiperLoop })
 onMounted(async () => {
   // Wait for next tick to ensure DOM is ready

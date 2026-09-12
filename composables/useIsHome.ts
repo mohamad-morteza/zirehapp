@@ -1,4 +1,3 @@
-// composables/useIsHome.js
 export const useIsHome = () => {
   const route = useRoute()
   return computed(() => route.name === 'index' && route.path === '/')

@@ -5,7 +5,7 @@ defineProps({
 </script>
 
 <template>
-  <NuxtLayout :name="error.Layout">
+  <NuxtLayout>
     <div class="w-full p-5 h-[400px] text-center flex flex-col justify-around">
       <div>
         <h2 class="text-8xl text-secondary mb-5">

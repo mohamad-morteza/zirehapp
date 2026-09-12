@@ -32,7 +32,7 @@ export const sanitizeText = (text) => {
     .normalize('NFKC') // Normalize unicode (fix weird invisible chars)
     .replace(/\r\n|\r|\n/g, '\n') // Normalize all line breaks to '\n'
     .replace(/\t+/g, ' ') // Replace all tabs with one space
-    .replace(/[•●▪️]/g, '-') // Replace bullet points with a simple dash
+    .replace(/[•●▪]/g, '-') // Replace bullet points with a simple dash
     .replace(/\u00A0/g, ' ') // Replace non-breaking spaces
     .replace(/\s{2,}/g, ' ') // Collapse multiple spaces into one
     .trim() // Trim extra spaces from start/end
@@ -42,8 +42,7 @@ export const Validation = (value, type) => {
   if (type === 'email') {
     const email = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     return email.test(value)
-  }
-  else if (type === 'phone') {
+  } else if (type === 'phone') {
     const phone = /^0?9[0-9]{9}$/
     return phone.test(value)
   }

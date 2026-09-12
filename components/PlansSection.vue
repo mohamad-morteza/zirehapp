@@ -2,10 +2,12 @@
 defineProps({
   titleClass: { type: String, default: '' },
 })
+
 const { data: plans } = await useAPI('BlogProduction/get-all', {
   key: 'PlansSection',
   method: 'GET',
   transform: (plans) => {
+    if (!plans?.Data) return []
     return plans.Data.map((plan) => {
       return {
         title: plan.Title,
@@ -16,10 +18,9 @@ const { data: plans } = await useAPI('BlogProduction/get-all', {
     })
   },
 })
+
 const planItems = computed(() => {
-  return [
-    ...plans.value || [],
-  ]
+  return plans.value || []
 })
 </script>
 
@@ -37,6 +38,7 @@ const planItems = computed(() => {
       <div class="flex items-center justify-around flex-wrap">
         <nuxt-link
           v-for="plan in planItems"
+          :key="plan.to"
           :to="plan.to"
           class="group w-[150px] flex flex-col items-center mb-6"
         >
@@ -56,55 +58,5 @@ const planItems = computed(() => {
         </nuxt-link>
       </div>
     </div>
-    <!--    <div -->
-    <!--      v-if="planItems.length" -->
-    <!--      class="hidden sm:block" -->
-    <!--    > -->
-    <!--      <div class="h-[310px]"> -->
-    <!--        <ui-kit-carosoul -->
-    <!--          v-slot="{ slide }" -->
-    <!--          :info="planItems" -->
-    <!--          :swiper-config="{ -->
-    <!--            breakpoints: { -->
-    <!--              1920: { -->
-    <!--                slidesPerView: 5.5, -->
-    <!--                spaceBetween: 1, -->
-    <!--              }, -->
-    <!--              1028: { -->
-    <!--                slidesPerView: 5.5, -->
-    <!--                spaceBetween: 1, -->
-    <!--              }, -->
-    <!--              990: { -->
-    <!--                slidesPerView: 1.5, -->
-    <!--                spaceBetween: 0, -->
-    <!--              }, -->
-    <!--            }, -->
-    <!--          }" -->
-    <!--        > -->
-    <!--          <nuxt-link -->
-    <!--            :to="slide.to" -->
-    <!--            class="group" -->
-    <!--          > -->
-    <!--            <div -->
-    <!--              class="h-[102px] rounded-full bg-white group-hover:bg-[#DCEDEC] flex items-center justify-center" -->
-    <!--            > -->
-    <!--              <nuxt-img -->
-    <!--                :src="slide.icon" -->
-    <!--                :alt="slide.to" -->
-    <!--                width="48" -->
-    <!--                height="48" -->
-    <!--                densities="x1" -->
-    <!--                format="webp" -->
-    <!--                :placeholder="true" -->
-    <!--              /> -->
-    <!--            </div> -->
-    <!--            <span -->
-    <!--              class="w-full text-center font-medium group-hover:font-bold group-hover:text-primary text-base inline-block mt-5" -->
-    <!--              v-text="slide.title" -->
-    <!--            /> -->
-    <!--          </nuxt-link> -->
-    <!--        </ui-kit-carosoul> -->
-    <!--      </div> -->
-    <!--    </div> -->
   </div>
 </template>

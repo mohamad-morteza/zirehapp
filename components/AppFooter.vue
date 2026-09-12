@@ -13,7 +13,7 @@
           />
           <div class="flex flex-row md:flex-col mb-4 pb-4 md:pb-0 md:mb-0 border-b border-[#A8A8A8]/50 md:border-0">
             <NuxtLink
-              v-for="blog in blogs"
+              v-for="blog in blogList"
               :key="blog.Id"
               :to="blog.Url"
               class="flex md:flex-col md:mb-6 me-6 last:me-0 min-w-[75px]"
@@ -92,6 +92,7 @@
               id="google-play"
               :href="getStoreLink('googlePlay')"
               target="_blank"
+              rel="noopener noreferrer"
               class="w-full h-[45px] bg-white border border-[#CACACA] rounded-xl flex items-center justify-center"
             >
               <img
@@ -104,6 +105,7 @@
               id="cafe-bazaar"
               :href="getStoreLink('cafeBazar')"
               target="_blank"
+              rel="noopener noreferrer"
               class="w-full h-[45px] bg-white border border-[#CACACA] rounded-xl flex items-center justify-center"
             >
               <img
@@ -116,7 +118,8 @@
               id="web-app"
               :href="getStoreLink('webApp')"
               target="_blank"
-              class="GTM_web-app w-full h-[45px] bg-white border border-[#CACACA] rounded-xl flex items-center justify-center"
+              rel="noopener noreferrer"
+              class="w-full h-[45px] bg-white border border-[#CACACA] rounded-xl flex items-center justify-center"
             >
               <nuxt-icon
                 name="web"
@@ -138,7 +141,7 @@
                 dir="ltr"
               >
               <ui-kit-c-button
-                id="GTM_send-link"
+                id="send-link"
                 class="w-[90px] h-[34px] m-auto ml-[6px] rounded-xl text-sm shrink-0"
                 :loading="loading"
                 :disabled="submitted"
@@ -243,8 +246,6 @@ defineProps({
   bgColor: { type: String, default: 'bg-white' },
 })
 
-const { currentDomain } = useDomain()
-
 const irEnemad = computed(() => {
   return false
 })
@@ -264,6 +265,7 @@ const { data: blogs } = await useAPI('blog/getlist', {
     SortBy: BlogSortTypesEnum.CreatedAt,
   },
   transform: ({ Data }) => {
+    if (!Data) return []
     return Data.slice(0, 3).map((blog) => {
       return {
         Title: blog.Title,
@@ -274,6 +276,8 @@ const { data: blogs } = await useAPI('blog/getlist', {
     })
   },
 })
+
+const blogList = computed(() => blogs.value || [])
 
 async function submit() {
   if (!/^09[0-9]{9}$/.test(mobile.value)) {

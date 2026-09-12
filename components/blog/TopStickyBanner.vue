@@ -12,7 +12,7 @@ defineProps({
       <img
         :src="topStickyBanner?.Image"
         class="w-full h-full"
-      />
+      >
     </a>
   </div>
 </template>

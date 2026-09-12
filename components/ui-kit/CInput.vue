@@ -1,9 +1,8 @@
 <template>
   <div
     class="base-input border"
-    :class="[baseInputClass , focused ? 'border-primary' : 'border-[#CACACA]']"
+    :class="[baseInputClass, focused ? 'border-primary' : 'border-[#CACACA]']"
     :data-type="type"
-    
   >
     <span
       v-if="loading"
@@ -41,7 +40,7 @@
       v-model="selfValue"
       v-bind="attributes"
       v-on="listeners"
-       @focus="onFocus"
+      @focus="onFocus"
       @blur="onBlur"
     />
 
@@ -51,11 +50,10 @@
       v-model="selfValue"
       v-bind="attributes"
       v-on="listeners"
-       @focus="onFocus"
+      @focus="onFocus"
       @blur="onBlur"
       @keydown.enter="fireEnterPressed"
-
-    />
+    >
 
     <div
       v-if="type === 'password'"
@@ -118,7 +116,7 @@ const props = defineProps({
   rounded: { type: String, default: '10px' },
 })
 
-const emit = defineEmits(['update:modelValue', 'blur', 'focus', 'input','enterPressed'])
+const emit = defineEmits(['update:modelValue', 'blur', 'focus', 'input', 'enterPressed'])
 
 const attrs = useAttrs()
 
@@ -165,6 +163,7 @@ const attributes = computed(() => {
     type: isPasswordShown.value ? 'text' : props.type,
     class: ['the-input', `direction-${props.ltr ? 'ltr' : 'rtl'}`, props.inputClass],
   }
+
   if (props.type === 'textarea') delete attributes.type
   return attributes
 })
@@ -183,8 +182,8 @@ const isEmpty = computed(() => {
 const baseInputClass = computed(() => {
   return [
     {
-      'empty': isEmpty.value,
-      'focused': focused.value,
+      empty: isEmpty.value,
+      focused: focused.value,
       'has-error': props.error,
     },
     props.wrapperClass,
@@ -224,6 +223,7 @@ function onFocus(e) {
 function onBlur(e) {
   focused.value = false
   emit('blur', e)
+
   const val = selfValue.value
   if (val === '') return
   if (props.min !== undefined && val * 1 < props.min) {
@@ -240,7 +240,7 @@ function focus() {
   })
 }
 
-function blur() {
+function _blur() {
   nextTick(() => {
     if (input.value) input.value.blur()
   })
@@ -250,13 +250,13 @@ function setLabelWidth() {
   setTimeout(() => {
     if (labelRef.value && (focused.value || (!focused.value && !isEmpty.value))) {
       labelWidth.value = labelRef.value.offsetWidth + 28 + 'px'
-    }
-    else {
+    } else {
       labelWidth.value = '15px'
     }
   }, 100)
 }
-const fireEnterPressed = ()=>{
+
+const fireEnterPressed = () => {
   emit('enterPressed')
 }
 </script>
@@ -366,7 +366,6 @@ const fireEnterPressed = ()=>{
     html[dir='rtl'] {
       direction: rtl;
     }
-  }
 
     &::placeholder {
       transition: all 0.3s ease;
@@ -430,8 +429,6 @@ const fireEnterPressed = ()=>{
   }
 
   &.focused {
-    &:before,
-    &:after {
     &:after {
       border-color: #02aa9b;
     }

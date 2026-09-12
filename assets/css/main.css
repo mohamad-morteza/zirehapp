@@ -44,7 +44,7 @@ html[dir='ltr'] {
 }
 
 .rtl {
-  direction: ltr;
+  direction: rtl;
 }
 
 .nuxt-icon svg {

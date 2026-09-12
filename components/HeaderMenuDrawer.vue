@@ -6,12 +6,14 @@ defineProps({
   showMenu: { type: Boolean, default: true },
   showDownloadBtn: { type: Boolean, default: true },
 })
+
 const { $t } = useI18n()
-const isLoggedIn = useCookie("AuthToken").value?.length > 0;
+const isLoggedIn = useCookie('AuthToken').value?.length > 0
 const user = ref({})
 const loading = ref(false)
 const openMenu = ref(false)
 const authenticated = ref(false)
+
 const info = [
   {
     title: $t('profile.myDiet'),
@@ -29,39 +31,23 @@ const info = [
     to: '/',
   },
 ]
+
 const token = useCookie('AuthToken')
 const { $viewport } = useNuxtApp()
 
-// const { data: user, status } = await $fetch('/user/get', {
-//   key: 'user',
-//   method: 'POST',
-//   server: false,
-//   lazy: true,
-//   transform: (user) => {
-//     return {
-//       Image: user.Data.Image,
-//       FullName: user.Data.Name + user.Data.Family,
-//     }
-//   },
-// })
-
-
-const getUserData =() =>{
-    useNuxtApp().$api('/user/get', {
-      server: false,
-      lazy: true,
-      method: 'POST',
-    }).then((res) => {
-      authenticated.value = true;
-      user.value = res.Data;
-      user.value.FullName = res.Data.Name + res.Data.Family
-    })
+const getUserData = () => {
+  useNuxtApp().$api('/user/get', {
+    server: false,
+    lazy: true,
+    method: 'POST',
+  }).then((res) => {
+    authenticated.value = true
+    user.value = res.Data
+    user.value.FullName = res.Data.Name + res.Data.Family
+  })
 }
-if(isLoggedIn) getUserData()
 
-// watch(status, (val) => {
-//   authenticated.value = val === 'success'
-// })
+if (isLoggedIn) getUserData()
 
 const showDrawer = ref(false)
 
@@ -76,8 +62,10 @@ function logoutUser() {
   logout()
   window.location.reload()
 }
+
 const goToProfile = () => {
   const backUrl = useState('backUrl')
+
   backUrl.value = '/'
   navigateTo({ path: '/' })
 }
@@ -90,7 +78,7 @@ const goToProfile = () => {
       <div class="hidden md:block !w-[124px] me-2">
         <ui-kit-c-button
           v-show="!authenticated && !loading && !$viewport.isLessThan('lg')"
-          id="GTM_loginOrRegisterInHeaderMenuDrawer"
+          id="login-or-register"
           class="!text-base !w-[124px] !h-[36px] !rounded-[8px] px-1"
           @click="goToProfile"
         >
@@ -165,9 +153,9 @@ const goToProfile = () => {
           />
           <ui-kit-c-button
             v-else
+            id="login-or-register-header"
             class="w-full mt-11 !h-[46px] !rounded-3xl"
             @click="goToProfile"
-            id="GTM_loginOrRegisterInHeader"
           >
             {{ $t('loginOrRegister') }}
           </ui-kit-c-button>
@@ -269,7 +257,7 @@ const goToProfile = () => {
         >
           <nuxt-link
             id="cafe-bazaar-drawer"
-            :to="getStoreLink('bazar')"
+            :to="getStoreLink('cafeBazar')"
             target="_blank"
             external
             class="border border-[#CACACA] rounded-[10px] w-full h-[37px] px-4 py-1 me-3"
@@ -285,7 +273,7 @@ const goToProfile = () => {
             />
           </nuxt-link>
           <nuxt-link
-            id="GTM_google-play-drawer"
+            id="google-play-drawer"
             :to="getStoreLink('googlePlay')"
             target="_blank"
             external
@@ -303,17 +291,18 @@ const goToProfile = () => {
           </nuxt-link>
         </div>
         <a
-            :href="getStoreLink('webApp')"
-            target="_blank"
-            class="GTM_web-app mt-3 w-full h-[45px] bg-white border border-[#CACACA] rounded-xl flex items-center justify-center"
+          :href="getStoreLink('webApp')"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="mt-3 w-full h-[45px] bg-white border border-[#CACACA] rounded-xl flex items-center justify-center"
         >
           <nuxt-icon
-              name="web"
-              class="text-[#707071] text-sm me-1.5"
+            name="web"
+            class="text-[#707071] text-sm me-1.5"
           />
           <span
-              class="text-sm text-[#707071]"
-              v-text="$t('webApplication')"
+            class="text-sm text-[#707071]"
+            v-text="$t('webApplication')"
           />
         </a>
       </div>

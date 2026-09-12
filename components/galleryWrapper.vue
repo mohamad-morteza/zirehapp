@@ -54,7 +54,7 @@ import lgThumbnail from 'lightgallery/plugins/thumbnail'
 import lgVideo from 'lightgallery/plugins/video'
 
 // Props
-const props = defineProps({
+defineProps({
   items: {
     type: Array,
     required: true,

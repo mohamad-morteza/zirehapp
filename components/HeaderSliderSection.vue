@@ -6,6 +6,7 @@ const { data: sliderItems } = await useAPI('BlogBanner/get-by-type', {
     BlogId: null,
   },
   transform: (res) => {
+    if (!res?.Data?.Slider) return []
     return res.Data.Slider.filter(item => item.PlaceType === 1).map(item => ({
       Title: item.Title,
       URL: item.URL,
@@ -19,12 +20,16 @@ const { data: hero } = await useAPI('/hero/get-newest', {
   key: 'HeaderSliderSection-hero',
   method: 'GET',
   transform: (res) => {
+    if (!res?.Data) return {}
     return {
       Name: res.Data.Name,
       LandingCover: res.Data.LandingCover,
     }
   },
 })
+
+const heroData = computed(() => hero.value || {})
+const sliderList = computed(() => sliderItems.value || [])
 </script>
 
 <template>
@@ -32,8 +37,9 @@ const { data: hero } = await useAPI('/hero/get-newest', {
     class="flex flex-row w-full"
   >
     <div
-      class="w-full aspect-[16/9]">
-      <ui-kit-light-carosoul :images="sliderItems" />
+      class="w-full aspect-[16/9]"
+    >
+      <ui-kit-light-carousel :images="sliderList" />
     </div>
     <div class="flex-grow ms-4 hidden md:block">
       <div
@@ -45,7 +51,7 @@ const { data: hero } = await useAPI('/hero/get-newest', {
         />
         <div class="flex-grow flex flex-col justify-center">
           <NuxtImg
-            :src="hero.LandingCover?.Url"
+            :src="heroData.LandingCover?.Url"
             :alt="$t('weekHero')"
             width="220"
             height="200"
@@ -58,7 +64,7 @@ const { data: hero } = await useAPI('/hero/get-newest', {
         >
           <span
             class="text-xl lg:text-2xl text-primary font-bold"
-            v-text="hero.Name"
+            v-text="heroData.Name"
           />
         </div>
       </div>

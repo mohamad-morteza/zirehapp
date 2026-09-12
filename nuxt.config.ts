@@ -9,7 +9,6 @@ export default defineNuxtConfig({
     '@nuxt/image',
     'nuxt-viewport',
     'nuxt-icons',
-    '@zadigetvoltaire/nuxt-gtm',
   ],
   app: {
     head: {
@@ -65,24 +64,6 @@ export default defineNuxtConfig({
 
       homeTitle: process.env.TITLE,
       homeDescription: process.env.DESCRIPTION,
-
-      aboutUsTitle: process.env.ABOUT_US_TITLE,
-      aboutUsDescription: process.env.ABOUT_US_DESCRIPTION,
-
-      contactUsTitle: process.env.CONTACT_US_TITLE,
-      contactUsDescription: process.env.CONTACT_US_DESCRIPTION,
-
-      downloadAppTitle: process.env.DOWNLOAD_APP_TITLE,
-      downloadAppDescription: process.env.DOWNLOAD_APP_DESCRIPTION,
-
-      getDietTitle: process.env.GET_DIET_TITLE,
-      getDietDescription: process.env.GET_DIET_DESCRIPTION,
-
-      loginTitle: process.env.LOGIN_TITLE,
-      loginDescription: process.env.LOGIN_DESCRIPTION,
-
-      blogTitle: process.env.BLOG_TITLE,
-      blogDescription: process.env.BLOG_DESCRIPTION,
     },
   },
 
@@ -121,10 +102,6 @@ export default defineNuxtConfig({
         blockSpacing: true,
       },
     },
-  },
-  gtm: {
-    id: 'GTM-XXXXXXX',
-    defer: true,
   },
 
   i18n: {

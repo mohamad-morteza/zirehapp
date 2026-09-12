@@ -1,13 +1,13 @@
 <script setup>
 defineProps({
   showSearch: { type: Boolean, default: false },
-  showDownload: { type: Boolean, default: true },
+  showDownload: { type: Boolean, default: false },
 })
+
 const route = useRoute()
 const { $t } = useI18n()
 const isHomePage = useIsHome()
 
-// ✅ Wait until plans is ready before building menus
 const menus = computed(() => {
   const m = [
     {
@@ -19,6 +19,7 @@ const menus = computed(() => {
       hasItems: false,
     },
   ]
+
   if (route.path !== '/')
     m.push({
       key: 'downloadPage',
@@ -30,7 +31,6 @@ const menus = computed(() => {
     })
   return m
 })
-
 </script>
 
 <template>
@@ -38,9 +38,12 @@ const menus = computed(() => {
     <div class="h-full full-container">
       <div class="h-full flex items-center justify-between flex-row">
         <!-- Site Main Title -->
-         <h1 v-if="isHomePage" class="sr-only">
+        <h1
+          v-if="isHomePage"
+          class="sr-only"
+        >
           زیره
-         </h1>
+        </h1>
         <!-- Logo -->
         <div
           class="flex items-center w-[56px] h-[20px] md:me-8 order-1 md:order-0"
@@ -64,7 +67,7 @@ const menus = computed(() => {
 
         <!-- Navigation -->
         <nav
-          v-show="!searching && menus.length"
+          v-show="menus.length"
           class="nav md:order-1 flex-grow overflow-visible hidden md:block h-full"
         >
           <ul class="nav__list flex flex-col md:flex-row gap-x-8 text-base p-4 md:p-0 h-full items-center">
@@ -130,7 +133,6 @@ const menus = computed(() => {
         <div class="md:me-2 md:flex-shrink-0 order-0 md:order-2 md:w-fit">
           <client-only>
             <LazyHeaderMenuDrawer
-              v-show="!searching"
               hydrate-on-interaction="click"
               :menus="menus"
             />
@@ -139,7 +141,7 @@ const menus = computed(() => {
 
         <!-- Download button -->
         <NuxtLink
-          v-show="showDownload && !searching && $route.path==='/'"
+          v-show="showDownload && $route.path==='/'"
           id="download-app-header"
           class="order-5 hidden hover:brightness-105 md:flex items-center justify-center w-[36px] h-[36px] rounded-full bg-[#D1EFEE] flex-shrink-0"
           :to="{ hash: '#intro-app' }"
@@ -158,14 +160,14 @@ const menus = computed(() => {
 
 <style scoped>
 .sr-only {
-	clip-path: inset(50%);
-	white-space: nowrap;
-	border-width: 0;
-	width: 1px;
-	height: 1px;
-	margin: -1px;
-	padding: 0;
-	position: absolute;
-	overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border-width: 0;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  position: absolute;
+  overflow: hidden;
 }
 </style>

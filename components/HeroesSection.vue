@@ -4,6 +4,7 @@ defineProps({
 })
 
 const { $t } = useI18n()
+
 const { data: heroes } = await useAPI('/hero/getlist', {
   key: 'HeroesSection',
   method: 'POST',
@@ -12,11 +13,12 @@ const { data: heroes } = await useAPI('/hero/getlist', {
     PerPage: 10,
   },
   transform: (res) => {
+    if (!res?.Data) return []
     return res.Data.map((hero) => {
       return {
-        videoUrl: hero.Video.Url,
-        name: hero.Name,
-        coverURL: hero.Cover.Url,
+        videoUrl: hero.Video?.Url || '',
+        name: hero.Name || '',
+        coverURL: hero.Cover?.Url || '',
         userId: hero.UserId,
         changes: hero.RecordWeight,
         type: hero.BeforeWeight > hero.AfterWeight ? $t('weightLoss') : $t('weightGain'),
@@ -24,16 +26,21 @@ const { data: heroes } = await useAPI('/hero/getlist', {
     })
   },
 })
+
+const heroList = computed(() => heroes.value || [])
+
 const isModalShown = ref(false)
 const swiper = ref(null)
 const slideSrc = ref(null)
 
 const galleryRef = ref(null)
 function showGallery(slide) {
-  const index = heroes.value.findIndex(val => val.userId === slide.userId)
+  const index = heroList.value.findIndex(val => val.userId === slide.userId)
   galleryRef.value?.openGallery(index)
 }
-const items = heroes.value.map(h => ({
+
+const items = computed(() => heroList.value.map(h => ({
+  ...h,
   type: 'video',
   config: {
     video: {
@@ -44,61 +51,59 @@ const items = heroes.value.map(h => ({
     dataSubHtml: `${h.name} با ${h.changes} ${$t('kilo')} ${h.type}`,
     image: h.coverURL,
   },
-}))
+})))
 
-watch(isModalShown, (val) => {
-  if (val) swiper.value.stopSwiperLoop()
-  else swiper.value.startSwiperLoop()
-})
+function playVideo(slide) {
+  slideSrc.value = slide.videoUrl
+  isModalShown.value = true
+}
 </script>
 
 <template>
-  <div>
-    <div
-      class="relative"
-    >
-      <div>
-        <h4
-          class="text-base md:text-2xl font-bold mb-4 md:mb-8"
-          :class="titleClass"
-          v-text="$t('zirehHeros')"
-        />
-      </div>
-      <div
-        class="h-[400px] xl:h-[350px]"
-      >
-        <ui-kit-carosoul
-          id="hero-marquee-slider"
-          ref="swiper"
+  <div class="mt-10 md:mt-24">
+    <div class="px-3 md:px-0">
+      <h4
+        class="text-base md:text-2xl font-bold mb-4 md:mb-8"
+        v-text="$t('successStories')"
+      />
+      <div v-if="heroList.length" class="h-[420px]">
+        <ui-kit-carousel
           v-slot="{ slide }"
+          :info="items"
           :swiper-config="{
-            speed: 1800,
-            autoplay: {
-              delay: 0,
-              disableOnInteraction: true,
-              pauseOnMouseEnter: true,
+            breakpoints: {
+              1920: {
+                slidesPerView: 3,
+                spaceBetween: 20,
+              },
+              1028: {
+                slidesPerView: 3,
+                spaceBetween: 20,
+              },
+              990: {
+                slidesPerView: 1.5,
+                spaceBetween: 15,
+              },
             },
-            pauseOnHover: true,
           }"
-          :info="heroes"
         >
-          <div>
-            <div
-              class="w-full bg-black/[.15] rounded-2xl pt-5 pb-7 mb-3 relative"
-              @click="showGallery(slide)"
-            >
+          <div
+            class="cursor-pointer"
+            @click="playVideo(slide)"
+          >
+            <div class="h-[330px] w-full relative">
               <nuxt-img
                 :src="slide.coverURL"
                 alt="video-cover"
-                class="w-[270px] h-[255px] mx-auto"
+                class="w-[462px] h-[330px] mx-auto"
               />
-              <ui-kit-play-btn />
+              <ui-kit-play-button />
             </div>
             <p class="text-base text-center">
               {{ `${slide.name} با ${slide.changes} ${$t('kilo')} ${slide.type}` }}
             </p>
           </div>
-        </ui-kit-carosoul>
+        </ui-kit-carousel>
         <gallery-wrapper
           ref="galleryRef"
           :items="items"
@@ -109,26 +114,12 @@ watch(isModalShown, (val) => {
       v-model="isModalShown"
     >
       <video
-        ref="video"
+        v-if="slideSrc"
         :src="slideSrc"
         controls
         autoplay
-        class="h-3/4 max-h-[800px]"
+        class="w-full"
       />
     </ui-kit-c-modal>
   </div>
 </template>
-
-<style>
-.lg-outer .lg-video-cont .lg-object{
-  max-width: 350px !important;
-  width: 100% !important;
-  height: auto !important;
-  margin: auto !important;
-  position: absolute !important;
-  top: 50% !important;
-  left: 50% !important;
-  cursor: pointer !important;
-  transform: translate(-50%, -50%) scale(1) !important;
-}
-</style>

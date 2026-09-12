@@ -3,9 +3,12 @@ const { data: info } = await useAPI('/public/ZirehSoFar', {
   key: 'AchievementSection',
   method: 'GET',
   transform: (res) => {
+    if (!res?.Data) return {}
     return res.Data
   },
 })
+
+const stats = computed(() => info.value || {})
 </script>
 
 <template>
@@ -16,7 +19,7 @@ const { data: info } = await useAPI('/public/ZirehSoFar', {
       class="h-16 md:h-[100px] p-4 bg-white rounded-2xl flex flex-col justify-center items-center"
     >
       <p class="text-primary font-bold text-xl md:text-2xl mb-1">
-        + {{ price(info?.AppInstallCount) }}
+        + {{ price(stats.AppInstallCount) }}
       </p>
       <span
         class="text-xs md:text-base"
@@ -28,7 +31,7 @@ const { data: info } = await useAPI('/public/ZirehSoFar', {
     >
       <p
         class="text-primary font-bold text-xl md:text-2xl mb-1"
-        v-text="info?.WeightLossSum"
+        v-text="stats.WeightLossSum"
       />
       <span
         class="text-xs md:text-base"
@@ -40,7 +43,7 @@ const { data: info } = await useAPI('/public/ZirehSoFar', {
     >
       <p
         class="text-primary font-bold text-xl md:text-2xl mb-1"
-        v-text="info?.WomenCount"
+        v-text="stats.WomenCount"
       />
       <span
         class="text-xs md:text-base"
@@ -52,7 +55,7 @@ const { data: info } = await useAPI('/public/ZirehSoFar', {
     >
       <p
         class="text-primary font-bold text-xl md:text-2xl mb-1 percent"
-        v-text="info?.MenCount"
+        v-text="stats.MenCount"
       />
       <span
         class="text-xs md:text-base"

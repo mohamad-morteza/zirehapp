@@ -26,16 +26,11 @@
           dir="ltr"
         >
           <div
-              dir="rtl"
-            v-for="item in videos"
+            v-for="item in videoList"
             :key="item.Id"
+            dir="rtl"
           >
             <div class="flex items-center w-full h-[85px] my-5">
-<!--              بخاطر اینکه با اسکرول بار کناری کنار هم قرار می گرفتند، حذف شد.-->
-<!--              <div-->
-<!--                class="h-4/5 md:h-full w-0.5 md:w-[5px] rounded-[30px] me-1.5 md:me-3 my-auto"-->
-<!--                :class="selected?.Id === item.Id && 'bg-primary'"-->
-<!--              />-->
               <NuxtImg
                 :src="item.Image"
                 :alt="item.ImageAlt"
@@ -56,27 +51,34 @@
                   v-text="item.Title"
                 />
                 <div class=" md:text-base flex items-center flex-wrap mt-2">
-                  <span v-text="item.Date" class="text-sm"/>
+                  <span
+                    class="text-sm"
+                    v-text="item.Date"
+                  />
                   <span class="w-[5px] h-[5px] rounded-full bg-[#D9D9D9] mx-2 " />
-                  <p v-text="$t('videoDuration', [item.Duration])" class="text-sm mb-1"/>
+                  <p
+                    class="text-sm mb-1"
+                    v-text="$t('videoDuration', [item.Duration])"
+                  />
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div
+          v-if="selected"
           class="grow mb-3 md:mb-0 relative"
           @click="showGallery"
         >
           <nuxt-img
-            :src="selected.BlogImage[1].Url"
+            :src="selected.BlogImage?.[1]?.Url || selected.Image"
             :is-expandable="false"
             class="w-full h-[180px] sm:h-[250px] md:h-[326px] rounded-2xl"
           />
-          <ui-kit-play-btn />
+          <ui-kit-play-button />
           <gallery-wrapper
             ref="galleryRef"
-            :items="items"
+            :items="galleryItems"
           />
         </div>
       </div>
@@ -87,6 +89,7 @@
 <script setup>
 const { $getLocale, $t } = useI18n()
 const selected = ref(null)
+
 const { data: videos } = await useAPI('blog/getlist', {
   key: 'VideoBlogSection',
   method: 'POST',
@@ -98,6 +101,7 @@ const { data: videos } = await useAPI('blog/getlist', {
     SortBy: BlogSortTypesEnum.Random,
   },
   transform: (res) => {
+    if (!res?.Data) return []
     return res.Data.map((item) => {
       return {
         Duration: item.Duration,
@@ -111,30 +115,34 @@ const { data: videos } = await useAPI('blog/getlist', {
       }
     })
   },
-  default: () => ([]),
 })
-selected.value = videos.value[0]
 
-const items = videos.value.map(h => ({
+const videoList = computed(() => videos.value || [])
+
+watch(videoList, (val) => {
+  if (val.length && !selected.value) {
+    selected.value = val[0]
+  }
+}, { immediate: true })
+
+const galleryItems = computed(() => videoList.value.map(h => ({
   type: 'video',
   config: {
     video: {
       source: [{ src: h.Video, type: 'video/mp4' }],
       attributes: { preload: false, controls: true },
     },
-    dataPoster: h.BlogImage[1].Url,
+    dataPoster: h.BlogImage?.[1]?.Url || h.Image,
     dataSubHtml: `${h.Title}`,
-    image: h.BlogImage[1].Url,
+    image: h.BlogImage?.[1]?.Url || h.Image,
     Id: h.Id,
   },
-}))
+})))
+
 const galleryRef = ref(null)
 function showGallery() {
-  const index = items.findIndex(val => val.config.Id === selected.value.Id)
+  if (!selected.value) return
+  const index = videoList.value.findIndex(val => val.Id === selected.value.Id)
   galleryRef.value?.openGallery(index)
 }
 </script>
-
-<style>
-
-</style>

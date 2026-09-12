@@ -47,6 +47,7 @@ const colorClasses = computed(() => {
     success: 'text-white bg-green-600 border-green-600 hover:bg-green-700',
     danger: 'text-white bg-red-600 border-red-600 hover:bg-red-700',
   }
+
   return colors[props.color]
 })
 

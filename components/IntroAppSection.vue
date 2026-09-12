@@ -1,7 +1,7 @@
 <script setup>
 const { getStoreLink } = useDomain()
 
-const props = defineProps({
+defineProps({
   showVideo: {
     type: Boolean,
     default: true,
@@ -74,7 +74,7 @@ const props = defineProps({
                     :href="getStoreLink('webApp')"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="GTM_web-app md:max-w-full lg:hidden col-span-1 bg-white border border-[#CACACA] rounded-xl h-[42px] lg:h-[52px] px-4 flex items-center justify-center"
+                    class="md:max-w-full lg:hidden col-span-1 bg-white border border-[#CACACA] rounded-xl h-[42px] lg:h-[52px] px-4 flex items-center justify-center"
                   >
                     <span
                       class="text-base text-[#707071]"
@@ -124,7 +124,7 @@ const props = defineProps({
                   </a>
                   <a
                     id="iapps"
-                    :href="getStoreLink('sibApp')"
+                    :href="getStoreLink('iApps')"
                     target="_blank"
                     rel="noopener noreferrer"
                     class="bg-white border border-[#CACACA] rounded-xl w-full md:max-w-full h-[42px] lg:h-[52px] px-4 lg-1 flex items-center justify-center"
@@ -154,7 +154,8 @@ const props = defineProps({
                   <a
                     :href="getStoreLink('webApp')"
                     target="_blank"
-                    class="GTM_web-app col-span-1 bg-white lg:border border-[#CACACA] rounded-xl h-[32px] lg:h-[52px] px-4 lg-1 flex items-center justify-center mb-4 lg:mb-0"
+                    rel="noopener noreferrer"
+                    class="col-span-1 bg-white lg:border border-[#CACACA] rounded-xl h-[32px] lg:h-[52px] px-4 lg-1 flex items-center justify-center mb-4 lg:mb-0"
                   >
                     <span
                       class="text-base text-[#707071]"

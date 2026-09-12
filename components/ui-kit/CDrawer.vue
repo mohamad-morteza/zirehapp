@@ -1,5 +1,5 @@
 <template>
-  <Teleport to="body" >
+  <Teleport to="body">
     <Transition name="fade">
       <div
         v-show="model"
@@ -49,7 +49,7 @@ defineProps({
   },
 })
 
-const model = defineModel( { default: false })
+const model = defineModel({ default: false })
 
 const closeDrawer = () => {
   model.value = false

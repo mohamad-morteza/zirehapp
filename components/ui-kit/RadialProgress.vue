@@ -1,13 +1,21 @@
 <template>
-  <div class="relative" :style="{ width: size + 'px', height: size + 'px' }">
+  <div
+    class="relative"
+    :style="{ width: size + 'px', height: size + 'px' }"
+  >
     <div
       class="rounded-full"
       :class="bgStroke"
       :style="{ width: size + 'px', height: size + 'px', padding: borderSize + 'px' }"
     >
-      <div class="rounded-full flex justify-center items-center h-full w-full" :class="bgColor">
+      <div
+        class="rounded-full flex justify-center items-center h-full w-full"
+        :class="bgColor"
+      >
         <slot>
-          <div class="text-xl">{{ percent + '%' }}</div>
+          <div class="text-xl">
+            {{ percent + '%' }}
+          </div>
         </slot>
       </div>
     </div>
@@ -30,8 +38,6 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
-
 const props = defineProps({
   percent: { type: [Number, String], default: 0 },
   size: { type: [Number, String], default: 0 },
@@ -53,6 +59,7 @@ const radius = computed(() => {
 const dashArray = computed(() => {
   return radius.value * Math.PI * 2
 })
+
 const dashOffset = computed(() => {
   return dashArray.value - (dashArray.value * props.percent) / 100
 })
