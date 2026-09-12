@@ -11,6 +11,10 @@ A modern corporate website built with **Nuxt 3** — showcasing the Zireh calori
 - **Component-based architecture** — clean, reusable Vue components
 - **Multi-site theming** — per-site colors and config via `websites/` directory
 
+## Screenshots
+
+> Want to see how the website looks? Check the [`screenshots/`](./screenshots) folder for desktop and mobile previews.
+
 ## Tech Stack
 
 - [Nuxt 3](https://nuxt.com) — Vue framework
